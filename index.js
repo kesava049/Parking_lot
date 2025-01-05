@@ -62,7 +62,9 @@ app.post('/pickup', async (req,res) => {
     
             // Calculate the difference in milliseconds
             const Milliseconds = endTime - startTime;
+            const TotalMinutes = Math.floor(Milliseconds / (1000 * 60)); // Minutes
             const TotalHours = Math.floor(Milliseconds / (1000 * 60 * 60)); // Hours
+
             let rent = 0;
 
             if(record.vehicleType == 'Bike'){
@@ -71,7 +73,7 @@ app.post('/pickup', async (req,res) => {
                 rent = 50;
             }
             
-            const TotalRent = TotalHours * rent;
+            const TotalRent = Math.round(TotalMinutes * (rent/60));
 
             record.isPickedUp = true;
             await record.save();
@@ -80,8 +82,8 @@ app.post('/pickup', async (req,res) => {
                 message: {
                     startTime: `Start Time: ${startTime}`,
                     currentTime: `Current Time: ${endTime}`,
-                    TotalHours: `TotalHours: ${TotalHours}`,
-                    totalRent: `The Rent to be Paid is: ${TotalRent}`
+                    TotalHours: `TotalTime: ${TotalHours} Hours and ${TotalMinutes} Minutes`,
+                    totalRent: `The Rent to be Paid is: ${TotalRent} rs.`
                 }
             })
         } else {
@@ -92,6 +94,22 @@ app.post('/pickup', async (req,res) => {
     } catch(e){
         res.status(500).json({ error: "An error occurred while processing the request." });
     }
+})
+
+app.get('/search', async(req,res) => {
+    const vehicleType = req.body.type;
+    const numberPlate = req.body.plate;
+    const vehicle = await VehicleParking.findOne({numberPlate})
+
+    if(!vehicle){
+        res.status(401).json({
+            msg: "Sorry Your Vehicle is Not Found in My Parking lot!"
+        })
+    }
+    const status = vehicle.isPickedUp ? "pickUped" : "parked";
+    res.status(200).json({
+        msg: `Your Vechicle with the plateNumber: ${numberPlate} is ${status} right Now.`
+    })
 })
 
 
