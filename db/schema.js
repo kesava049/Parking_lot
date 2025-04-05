@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 mongoose.connect('mongodb+srv://kalepallikesavulareddy:ugPHI1XXuRwbCw6A@cluster0.tzpqn.mongodb.net/Bike_Rental_backend');
 
-const Parking = new mongoose.Schema({
+
+const VehicleParkingSchema = new mongoose.Schema({
     vehicleType: String,
     numberPlate: Number,
     startTime: Date,
@@ -10,8 +11,6 @@ const Parking = new mongoose.Schema({
 })
 
 
-const VehicleParking = mongoose.model('VehicleParking',Parking);
+const VehicleParking = mongoose.model('VehicleParking',VehicleParkingSchema);
 
-module.exports = {
-    VehicleParking
-}
+module.exports = { VehicleParking };
