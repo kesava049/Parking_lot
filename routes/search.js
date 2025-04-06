@@ -1,23 +1,31 @@
 const { Router } = require("express");
 const router = Router();
-const { VehicleParking } = require("../db/schema")
+const { VehicleParking } = require("../db/schema");
 
+router.get("/", async (req, res) => {
+    const { numberPlate } = req.query; // ✅ Use query parameters
 
-router.get('/', async(req,res) => {
-    const vehicleType = req.body.type;
-    const numberPlate = req.body.plate;
-    const vehicle = await VehicleParking.findOne({numberPlate})
-
-    if(!vehicle){
-        res.status(401).json({
-            msg: "Sorry Your Vehicle is Not Found in My Parking lot!"
-        })
+    if (!numberPlate) {
+        return res.status(400).json({ msg: "❌ Number Plate is required!" });
     }
-    const status = vehicle.isPickedUp ? "pickUped" : "parked";
-    res.status(200).json({
-        msg: `Your Vechicle with the plateNumber: ${numberPlate} is ${status} right Now.`
-    })
-})
 
+    try {
+        const vehicle = await VehicleParking.findOne({ numberPlate });
+
+        if (!vehicle) {
+            return res.status(404).json({
+                msg: "❌ Sorry, your vehicle is NOT found in our parking lot!",
+            });
+        }
+
+        const status = vehicle.isPickedUp ? "picked up" : "parked";
+        return res.status(200).json({
+            msg: `✅ Your vehicle with plate number **${numberPlate}** is currently **${status}**.`,
+        });
+    } catch (error) {
+        console.error("Error fetching vehicle:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
 module.exports = router;
