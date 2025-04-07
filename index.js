@@ -1,25 +1,26 @@
 const express = require("express");
 const cors = require("cors");
-const parkingRoutes = require("./routes/parking"); // ✅ Import route
-
-const app = express();
-
-app.use(cors()); // ✅ Fix CORS issue
-app.use(express.json()); // ✅ Parse JSON requests
-
-app.use("/api", parkingRoutes); // ✅ Route now prefixed with /api
-
+require("dotenv").config();
 
 const parkRouter = require("./routes/parking");
 const pickupRouter = require("./routes/pickup");
 const searchRouter = require("./routes/search");
+const paymentRoutes = require("./routes/payment");
 
-app.use("/park", parkRouter);
-app.use("/pickup", pickupRouter);
-app.use("/search", searchRouter);
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use("/api/", parkRouter);
+app.use("/api/pickup", pickupRouter);
+app.use("/api/search", searchRouter);
+app.use("/api/payment", paymentRoutes);
 
 
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`App running on port: ${PORT} 🚀`);
 });
+
