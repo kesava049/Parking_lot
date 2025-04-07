@@ -46,10 +46,10 @@ router.post("/", async (req, res) => {
             // ✅ Return the Corrected Response
             res.status(200).json({
                 message: {
-                    startTime: `🕒 Start Time: ${startTime.toLocaleString()}`,
-                    currentTime: `🕒 Current Time: ${endTime.toLocaleString()}`,
-                    totalTime: `⏳ TotalTime: ${totalHours} Hours and ${totalMinutes} Minutes`,
-                    totalRent: `💰 The Rent to be Paid is: ${totalRent} rs`
+                    startTime: startTime.toLocaleString(),
+                    currentTime: endTime.toLocaleString(),
+                    totalTime: `${totalHours} Hours and ${totalMinutes} Minutes`, // ✅ Use correct name
+                    totalRent: totalRent // ✅ Send as number, not string
                 }
             });
         }
