@@ -23,33 +23,27 @@ router.post("/", async (req, res) => {
         }
 
         if (record) {
-            const startTime = new Date(record.startTime); // Get startTime from database
-            const endTime = new Date(); // Current time
+            const startTime = new Date(record.startTime); 
+            const endTime = new Date(); 
             
-            // ✅ Corrected: Calculate Total Time (in milliseconds)
             const timeDiffMs = endTime - startTime;
             
-            // ✅ Convert into Hours & Minutes Properly
-            const totalMinutes = Math.floor(timeDiffMs / (1000 * 60)) % 60; // Remaining minutes
-            const totalHours = Math.floor(timeDiffMs / (1000 * 60 * 60)); // Total hours
+            const totalMinutes = Math.floor(timeDiffMs / (1000 * 60)) % 60; 
+            const totalHours = Math.floor(timeDiffMs / (1000 * 60 * 60)); 
 
-            // ✅ Set Rent Per Hour
             let rentPerHour = vehicleType.toLowerCase() === "bike" ? 20 : 50;
 
-            // ✅ Corrected: Calculate Rent for Exact Time
             const totalRent = Math.round((timeDiffMs / (1000 * 60 * 60)) * rentPerHour);
 
-            // ✅ Mark vehicle as picked up
             record.isPickedUp = true;
             await record.save();
 
-            // ✅ Return the Corrected Response
             res.status(200).json({
                 message: {
                     startTime: startTime.toLocaleString(),
                     currentTime: endTime.toLocaleString(),
-                    totalTime: `${totalHours} Hours and ${totalMinutes} Minutes`, // ✅ Use correct name
-                    totalRent: totalRent // ✅ Send as number, not string
+                    totalTime: `${totalHours} Hours and ${totalMinutes} Minutes`, 
+                    totalRent: totalRent 
                 }
             });
         }

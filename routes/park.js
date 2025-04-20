@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { VehicleParking } = require("../db/schema");
 
-router.post("/park", async (req, res) => { // ✅ Fix the route path
+router.post("/park", async (req, res) => { 
     console.log("Received POST request:", req.body);
 
     const { vehicleType, numberPlate } = req.body;

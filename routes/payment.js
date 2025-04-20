@@ -6,7 +6,6 @@ dotenv.config();
 
 const router = express.Router();
 
-// ✅ Initialize Razorpay with environment variables
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET_KEY,
@@ -21,7 +20,7 @@ router.post("/order", async (req, res) => {
     }
 
     const options = {
-      amount: amount * 100, // Convert INR to paise
+      amount: amount * 100, 
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };

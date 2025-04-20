@@ -3,7 +3,7 @@ const router = Router();
 const { VehicleParking } = require("../db/schema");
 
 router.get("/", async (req, res) => {
-    const { numberPlate } = req.query; // ✅ Use query parameters
+    const { numberPlate } = req.query; 
 
     if (!numberPlate) {
         return res.status(400).json({ msg: "❌ Number Plate is required!" });
@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 
         const status = vehicle.isPickedUp ? "picked up" : "parked";
         return res.status(200).json({
-            msg: `✅ Your vehicle with plate number **${numberPlate}** is currently **${status}**.`,
+            msg: `✅ Your vehicle with plate number ->${numberPlate} is currently ${status}`,
         });
     } catch (error) {
         console.error("Error fetching vehicle:", error);

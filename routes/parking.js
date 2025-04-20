@@ -12,7 +12,7 @@ router.post("/park", async (req, res) => {
     }
 
     try {
-        // ✅ Check if the vehicle is already parked
+       
         const existingVehicle = await VehicleParking.findOne({ numberPlate, isPickedUp: false });
 
         if (existingVehicle) {
@@ -21,7 +21,7 @@ router.post("/park", async (req, res) => {
             });
         }
 
-        // 🚗 If not already parked, insert new entry
+        
         let startTime = new Date();
         await VehicleParking.create({ vehicleType, numberPlate, startTime, isPickedUp: false });
 
